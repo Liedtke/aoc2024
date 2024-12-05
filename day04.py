@@ -3,16 +3,12 @@ import itertools
 input = [line for line in open("inputs/day04.txt").read().split("\n")]
 
 def test1(x, y, dx, dy):
-    expected = "MAS"
-    try:
-        for e in expected:
-            x += dx
-            y += dy
-            if x < 0 or y < 0 or input[y][x] != e:
-                return 0
-        return 1
-    except:
-        return 0
+    for e in "MAS":
+        x += dx
+        y += dy
+        if not(0 <= y < len(input)) or not(0 <= x < len(input[y])) or input[y][x] != e:
+            return 0
+    return 1
 
 result1 = 0
 result2 = 0
