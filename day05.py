@@ -22,3 +22,10 @@ for pages in invalid:
                 swapped = True
 
 print(f"part 2 = {sum(pages[len(pages) // 2] for pages in invalid)}")
+
+# Nicer solution for part 2 using builtin sorting.
+import functools
+invalid = [pages[:] for pages in page_lists if not valid_order(pages)]
+rules_set = set((before, after) for before, after in rules)
+key = functools.cmp_to_key(lambda a, b: 1 if (a, b) in rules_set else -1 if (b, a) in rules_set else 0)
+print(f"part 2 (alt) = {sum(sorted(pages, key=key)[len(pages) // 2] for pages in invalid)}")
