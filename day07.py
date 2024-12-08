@@ -1,16 +1,25 @@
 import operator
-import itertools
+
+def rec(operands, ops):
+    if len(operands) == 1:
+        return operands
+    inner_values = rec(operands[:-1], ops)
+    res = set()
+    for inner in inner_values:
+        for inner_res in (op(inner, operands[-1]) for op in ops):
+            res.add(inner_res)
+    return res
 
 input = (line.split(": ") for line in open("inputs/day07.txt").read().split("\n"))
 input = [(int(lhs), tuple(map(int, rhs.split(" ")))) for lhs, rhs in input]
-part_1 = 0
-for expected, operands in input:
-    for operators in itertools.product(*([(operator.add, operator.mul)] * (len(operands)-1))):
-        result = operands[0]
-        for operand, op in zip(operands[1:], operators):
-            result = op(result, operand)
-        if result == expected:
-            part_1 += expected
-            break
+results = [0, 0]
+concat = lambda a, b: int(str(a) + str(b))
+for i, operators in enumerate(((operator.add, operator.mul), (operator.add, operator.mul, concat))):
+    for expected, operands in input:
+        res = rec(operands, operators)
+        if expected in res:
+            results[i] += expected
 
-print(f"part 1 = {part_1}")
+
+print(f"part 1 = {results[0]}")
+print(f"part 2 = {results[1]}")
