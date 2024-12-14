@@ -27,7 +27,7 @@ for antenna, coords in antennas.items():
                 antinodes2.add((y, x))
                 y, x = y + dy, x + dx
             y, x = ay, ax
-            while  inbounds(y, x):
+            while inbounds(y, x):
                 antinodes2.add((y, x))
                 y, x = y - dy, x - dx
 
