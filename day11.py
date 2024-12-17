@@ -16,4 +16,4 @@ for gen in range(75):
             next[stone * 2024] += count
     input = next
     if gen == 24 or gen == 74:
-        print(f"part {1 if gen == 25 else 2} = {sum(n for n in input.values())}")
+        print(f"part {1 if gen == 24 else 2} = {sum(n for n in input.values())}")
