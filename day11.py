@@ -1,17 +1,19 @@
+from collections import defaultdict
 
-input = list(map(int, open("inputs/day11.txt").read().split(" ")))
-for gen in range(25):
-    next = []
-    for stone in input:
+input = {stone: 1 for stone in map(int, open("inputs/day11.txt").read().split(" "))}
+for gen in range(75):
+    next = defaultdict(int)
+    for stone, count in input.items():
         if stone == 0:
-            next.append(1)
+            next[1] += count
             continue
         as_string = str(stone)
         if len(as_string) % 2 == 0:
             split = len(as_string) // 2
-            next.append(int(as_string[:split]))
-            next.append(int(as_string[split:]))
+            next[int(as_string[:split])] += count
+            next[int(as_string[split:])] += count
         else:
-            next.append(stone * 2024)
+            next[stone * 2024] += count
     input = next
-    print(f"gen {gen}: {len(input)}")
+    if gen == 24 or gen == 74:
+        print(f"part {1 if gen == 25 else 2} = {sum(n for n in input.values())}")
