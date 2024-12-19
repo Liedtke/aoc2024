@@ -3,19 +3,27 @@ regex = re.compile(r"Button A: X\+([0-9]+), Y\+([0-9]+)\nButton B: X\+([0-9]+), 
 
 def solve(offset):
     result = 0
-    for input in open("inputs/day13e.txt").read().split("\n\n"):
+    for input in open("inputs/day13.txt").read().split("\n\n"):
         x1, y1, x2, y2, tx, ty = [int(x) for x in regex.match(input).groups()]
         tx, ty = tx + offset, ty + offset
-        min_tokens = math.inf
-        for i in range(101):
-            x, y = x1 * i, y1 * i
-            dx, dy = tx - x, ty - y
-            steps_x, steps_y = dx / x2, dy / y2
-            if steps_x == steps_y == math.floor(steps_x):
-                print(f"possible combination: {i}, {steps_x}")
-                min_tokens = int(min(min_tokens, i * 3 + steps_x))
-        print(min_tokens)
-        result += min_tokens if min_tokens != math.inf else 0
+        # linear equations:
+        #   x1 * a + x2 * b = tx    (1)
+        #   y1 * a + y2 * b = ty    (2)
+        # - transform (2):
+        #   b = (ty - y1 * a) / y2  (3)
+        # - insert (3) in (1):
+        #   x1 * a + x2 * (ty - y1 * a) / y2 = tx
+        #   x1 * a + x2 * ty / y2 - x2 * y1 / y2 * a = tx
+        #   x1 * a - x2 * y1 / y2 * a = tx - x2 * ty / y2
+        #   (x1 - x2 * y1 / y2) * a = tx - x2 * ty / y2
+        #   a = (tx - x2 * ty / y2) / (x1 - x2 * y1 / y2)
+        #   a = (tx * y2 - x2 * ty) / (x1 * y2 - x2 * y1)
+        a = (tx * y2 - x2 * ty) / (x1 * y2 - x2 * y1)
+        b = (ty - y1 * a) / y2
+        print(a, b)
+        if a.is_integer() and b.is_integer():
+            result += int(a * 3 + b)
     return result
 
 print(f"part 1 = {solve(0)}")
+print(f"part 2 = {solve(10000000000000)}")
