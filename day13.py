@@ -1,4 +1,4 @@
-import math, re
+import re
 regex = re.compile(r"Button A: X\+([0-9]+), Y\+([0-9]+)\nButton B: X\+([0-9]+), Y\+([0-9]+)\nPrize: X=([0-9]+), Y=([0-9]+)")
 
 def solve(offset):
@@ -20,7 +20,6 @@ def solve(offset):
         #   a = (tx * y2 - x2 * ty) / (x1 * y2 - x2 * y1)
         a = (tx * y2 - x2 * ty) / (x1 * y2 - x2 * y1)
         b = (ty - y1 * a) / y2
-        print(a, b)
         if a.is_integer() and b.is_integer():
             result += int(a * 3 + b)
     return result
