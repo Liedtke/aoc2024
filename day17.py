@@ -68,11 +68,8 @@ def part2(expected, inputs, num_matched):
                 val = input + i
                 matched = try_it(val, num_matched)
                 if matched > num_matched:
-                    if matched > new_num_matched:
-                        new_num_matched = matched
-                        res = [val]
-                    elif matched == new_num_matched:
-                        res.append(val)
+                    new_num_matched = matched
+                    res.append(val)
         bits += 1
     return part2(expected, res, new_num_matched)
 
