@@ -58,19 +58,17 @@ def try_it(val, num_matched):
 def part2(expected, inputs, num_matched):
     if num_matched == len(expected):
         return inputs
-    bits = 0
+    bits = 3 # This could also be increased iteratively from 0.
     res = []
     new_num_matched = 0
-    while not res:
-        for input in inputs:
-            input = input << bits
-            for i in range(1 << bits):
-                val = input + i
-                matched = try_it(val, num_matched)
-                if matched > num_matched:
-                    new_num_matched = matched
-                    res.append(val)
-        bits += 1
+    for input in inputs:
+        input = input << bits
+        for i in range(1 << bits):
+            val = input + i
+            matched = try_it(val, num_matched)
+            if matched > num_matched:
+                new_num_matched = matched
+                res.append(val)
     return part2(expected, res, new_num_matched)
 
 print(f"part 2 = {min(part2(program, [0], 0))}")
